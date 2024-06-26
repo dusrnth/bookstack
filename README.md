@@ -1,3 +1,7 @@
+# BookStack
+
+- bookstack 쉽게 사용하기 위한 init 버전
+
 ## 사용법
 
 ```
