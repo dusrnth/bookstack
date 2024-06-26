@@ -1,6 +1,10 @@
 #!/bin/bash
 
-# 복원할 백업 파일 지정
+# 설정 변수
+DB_CONTAINER_NAME=bookstack_db
+MYSQL_USER=bookstack
+MYSQL_PASSWORD=password
+DATABASE_NAME=bookstackdb
 BACKUP_FILE=$1
 
 # 백업 파일이 지정되지 않았을 경우 오류 메시지 출력
@@ -15,18 +19,17 @@ if [ ! -f $BACKUP_FILE ]; then
   exit 1
 fi
 
-# Docker Compose 다운
-docker-compose down
-
-# 기존 데이터를 삭제
-rm -rf ./bookstack/config/*
-rm -rf ./bookstack_db/data/*
-
-# 백업 파일에서 데이터 복원
-tar -xzvf $BACKUP_FILE
-
-# Docker Compose 다시 시작
+# Docker Compose 업
 docker-compose up -d
+
+# MySQL 컨테이너가 정상적으로 기동될 때까지 대기
+echo "Waiting for MySQL to start..."
+until docker exec -it $DB_CONTAINER_NAME mysqladmin ping -u $MYSQL_USER -p$MYSQL_PASSWORD --silent; do
+  sleep 1
+done
+
+# 데이터베이스 복원
+cat $BACKUP_FILE | docker exec -i $DB_CONTAINER_NAME /bin/bash -c "mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $DATABASE_NAME"
 
 echo "Restoration completed: $BACKUP_FILE"
 
