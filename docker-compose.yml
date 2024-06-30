@@ -11,14 +11,23 @@ services:
       - DB_PASS=password
       - DB_DATABASE=bookstackdb
       - APP_URL=http://localhost:6875
-      - APP_LANG=ko  # 기본 언어를 한국어로 설정
-      - TZ=Asia/Seoul  # 시간대를 GMT+9로 설정
+      - APP_LANG=ko
+      - TZ=Asia/Seoul
+      - MAIL_DRIVER=smtp
+      - MAIL_HOST=smtp.gmail.com
+      - MAIL_PORT=587
+      - MAIL_USERNAME=myemail
+      - MAIL_PASSWORD=mypassword
+      - MAIL_ENCRYPTION=tls
+      - MAIL_FROM_ADDRESS=myemail
+      - MAIL_FROM_NAME=BookStack
     volumes:
-      - ./bookstack/config:/config  # 로컬 디렉토리로 설정
+      - ./bookstack/config:/config
     ports:
       - 6875:80
     depends_on:
       - bookstack_db
+      - msmtp
 
   bookstack_db:
     image: ghcr.io/linuxserver/mariadb
@@ -29,5 +38,12 @@ services:
       - MYSQL_USER=bookstack
       - MYSQL_PASSWORD=password
     volumes:
-      - ./bookstack_db/data:/var/lib/mysql  # 로컬 디렉토리로 설정
+      - ./bookstack_db/data:/var/lib/mysql
+
+  msmtp:
+    build: .
+    container_name: msmtp
+    volumes:
+      - ./msmtprc:/etc/msmtprc
+      - ./msmtp_logs:/var/log
 
