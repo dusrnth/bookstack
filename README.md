@@ -5,6 +5,8 @@
 - Docker로 배포 및 백업
 - 같은 오픈소스로 개인 위키 운영
   - https://kyupid.wiki
+  - 개인위키는 AWS LightSail $3.5 요금제 활용중
+  - 제공 RAM 512mb 밖에 안되지만 swap memory 사용하면 됨
 
 ## 사용법
 
