@@ -1,10 +1,8 @@
 #!/bin/bash
 
+source ../.env
+
 # 설정 변수
-DB_CONTAINER_NAME=bookstack_db
-MYSQL_USER=bookstack
-MYSQL_PASSWORD=password
-DATABASE_NAME=bookstackdb
 BACKUP_FILE=$1
 
 # 백업 파일이 지정되지 않았을 경우 오류 메시지 출력
