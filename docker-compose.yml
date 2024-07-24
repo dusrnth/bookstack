@@ -4,46 +4,37 @@ services:
     image: ghcr.io/linuxserver/bookstack
     container_name: bookstack
     environment:
-      - PUID=1000
-      - PGID=1000
-      - DB_HOST=bookstack_db
-      - DB_USER=bookstack
-      - DB_PASS=password
-      - DB_DATABASE=bookstackdb
-      - APP_URL=http://localhost:6875
-      - APP_LANG=ko
-      - TZ=Asia/Seoul
-      - MAIL_DRIVER=smtp
-      - MAIL_HOST=smtp.gmail.com
-      - MAIL_PORT=587
-      - MAIL_USERNAME=myemail
-      - MAIL_PASSWORD=mypassword
-      - MAIL_ENCRYPTION=tls
-      - MAIL_FROM_ADDRESS=myemail
-      - MAIL_FROM_NAME=BookStack
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_DATABASE=${DB_DATABASE}
+      - APP_URL=${APP_URL}
+      - APP_LANG=${APP_LANG}
+      - TZ=${TZ}
+      - MAIL_DRIVER=${MAIL_DRIVER}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_ENCRYPTION=${MAIL_ENCRYPTION}
+      - MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS}
+      - MAIL_FROM_NAME=${MAIL_FROM_NAME}
     volumes:
       - ./bookstack/config:/config
     ports:
-      - 6875:80
+      - 80:80
     depends_on:
       - bookstack_db
-      - msmtp
 
   bookstack_db:
     image: ghcr.io/linuxserver/mariadb
     container_name: bookstack_db
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_DATABASE=bookstackdb
-      - MYSQL_USER=bookstack
-      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
     volumes:
-      - ./bookstack_db/data:/var/lib/mysql
-
-  msmtp:
-    build: .
-    container_name: msmtp
-    volumes:
-      - ./msmtprc:/etc/msmtprc
-      - ./msmtp_logs:/var/log
-
+      - ./bookstack_db/data:/config/databases
