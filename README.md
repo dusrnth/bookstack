@@ -3,7 +3,7 @@
 - [BookStack](https://www.bookstackapp.com/) 간편하게 사용하기 위한 초기 설정 버전
 - 사내 협력사와의 커뮤니케이션 문제 해결하기 위함 및 DB 그룹 관련 데이터 통합
 - Docker로 배포 및 백업
-- 같은 오픈소스로 개인 위키 운영
+- 개인 위키 운영
   - https://kyupid.wiki
   - 개인위키는 AWS LightSail $3.5 요금제 활용중
  
